@@ -61,19 +61,46 @@ Full_wp$other_better_lives <- ordinal_to_quant(Full_wp$`I think others have a be
 Full_wp$depressive_tendencies <- freq_to_quant(Full_wp$`I feel I have depressive tendencies`)
 Full_wp$bad_sleep <- freq_to_quant(Full_wp$`I suffer from poor sleep - either too much, too little, or irregular sleeping patterns`)
 Full_wp$lonely <- freq_to_quant(Full_wp$`I feel lonely`)
-Full_wp$`On average, how many cumulative hours per day do you spend on your mobile device?`
 Full_wp$social_media_makes_lonely <- ordinal_to_quant(Full_wp$`Social Media usage makes me feel less lonely`)
-Full_wp$feel_constant_need_to_look_at_phone <- Full_wp$`I feel a constant need to check my smartphone`
+Full_wp$feel_constant_need_to_look_at_phone <- ordinal_to_quant(Full_wp$`I feel a constant need to check my smartphone`)
 Full_wp$is_phone_distracting <- freq_to_quant(Full_wp$`In general, how much do you feel your smartphone is a distraction while you are trying to concentrate?`)
 Full_wp$phone_better_life <-  ordinal_to_quant(Full_wp$`My day-to-day smartphone usage enhances the quality of my life`)
-table(Full_wp$`People check their phones multiple times a day. During your 8 hour workday, please estimate the total time spent on your mobile device on tasks unrelated to work?`)
 
+#getting odd response variables into quasi quantitative.
 Full_wp$phone_at_work_time <- ifelse(Full_wp$`People check their phones multiple times a day. During your 8 hour workday, please estimate the total time spent on your mobile device on tasks unrelated to work?` == "0-1 Hour", 0,
        ifelse(Full_wp$`People check their phones multiple times a day. During your 8 hour workday, please estimate the total time spent on your mobile device on tasks unrelated to work?` == "1-2 Hours", 1,
               ifelse(Full_wp$`People check their phones multiple times a day. During your 8 hour workday, please estimate the total time spent on your mobile device on tasks unrelated to work?` == "2-3 Hours",2,
                      ifelse(Full_wp$`People check their phones multiple times a day. During your 8 hour workday, please estimate the total time spent on your mobile device on tasks unrelated to work?` == "3-4 Hours", 3,
                             ifelse(Full_wp$`People check their phones multiple times a day. During your 8 hour workday, please estimate the total time spent on your mobile device on tasks unrelated to work?` == "5 + Hours", 5,
                                    ifelse(Full_wp$`People check their phones multiple times a day. During your 8 hour workday, please estimate the total time spent on your mobile device on tasks unrelated to work?` == "4-5 Hours", 4, NA))))))
-======================================================================
+
+Full_wp$stress_level <- ifelse(Full_wp$`On a scale of 1 - 5, please rate your level of stress` == "Extremely High Stress", 4,
+                               ifelse(Full_wp$`On a scale of 1 - 5, please rate your level of stress` == "High Stress", 3,
+                               ifelse(Full_wp$`On a scale of 1 - 5, please rate your level of stress` == "Little Stress", 1, 
+                               ifelse(Full_wp$`On a scale of 1 - 5, please rate your level of stress` == "Moderate Stress",2, NA))))
+Full_wp$mobile_per_day <- ifelse(Full_wp$`On average, how many cumulative hours per day do you spend on your mobile device?` == '0-1 Hour', 0,
+                              ifelse(Full_wp$`On average, how many cumulative hours per day do you spend on your mobile device?` == '1-2 Hours', 1,
+                                ifelse(Full_wp$`On average, how many cumulative hours per day do you spend on your mobile device?` == '2-3 Hours', 2,
+                                    ifelse(Full_wp$`On average, how many cumulative hours per day do you spend on your mobile device?` == '3-4 Hours', 3,
+                                          ifelse(Full_wp$`On average, how many cumulative hours per day do you spend on your mobile device?` == '4-5 Hours', 4,
+                                               ifelse(Full_wp$`On average, how many cumulative hours per day do you spend on your mobile device?` == '5+ Hours', 5, NA))))))
+Full_wp$consciously_no_phone <- ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc` == '0-1 Hour', 0,
+                                 ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc`== '1-2 Hours', 1,
+                                        ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc` == '2-3 Hours', 2,
+                                               ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc`, 3,
+                                                      ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc`, 4,
+                                                             ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc`, 5, NA))))))
+
+Full_wp$house_income_midpoint <- ifelse(Full_wp$`Household Income` == '$0-$9,999', 5000,
+                                        ifelse(Full_wp$`Household Income` == '$10,000-$24,999', 17500,
+                                               ifelse(Full_wp$`Household Income` == '$100,000-$124,999', 112500,
+                                                      ifelse(Full_wp$`Household Income` == '$125,000-$149,999', 137500,
+                                                             ifelse(Full_wp$`Household Income` == '$150,000-$174,999', 162500,
+                                                                    ifelse(Full_wp$`Household Income` == '$175,000-$199,999', 187500,
+                                                                           ifelse(Full_wp$`Household Income` == '$200,000+', 200000,
+                                                                                  ifelse(Full_wp$`Household Income` == '$25,000-$49,999', 37500, 
+                                                                                         ifelse(Full_wp$`Household Income` == '$50,000-$74,999', 62500,
+                                                                                                ifelse(Full_wp$`Household Income` == '$75,000-$99,999', 87500, NA))))))))))
+
+#======================================================================
 write_csv(Full_wp, 'clean_wp.csv')
-?write_csv

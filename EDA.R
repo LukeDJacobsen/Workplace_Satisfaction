@@ -8,7 +8,7 @@ clean_wp <- read_csv('data/clean_wp.csv')
 #phone time at work and personal satisfaction
 names(clean_wp)
 ggplot(clean_wp, aes(phone_at_work_time ,personal_satisfaction))  +
-  geom_jitter(height = .4, width = .4)
+  geom_jitter(height = .4, width = .4) + geom_smooth(method = lm)
 sat_mod <- lm(personal_satisfaction ~ phone_at_work_time, data = clean_wp)
 summary(sat_mod)
 
@@ -37,13 +37,17 @@ ggplot(clean_wp, aes(phone_at_work_time, searching_new_employment)) +
 
 #efficiency to phone use
 ggplot(clean_wp, aes(phone_at_work_time, use_time_efficient)) + 
-  geom_jitter(height = .4, width = .4) + geom_smooth()
+  geom_jitter(height = .4, width = .4) +geom_smooth(method = lm)
 efficient_mod <- lm(use_time_efficient ~ phone_at_work_time, data = clean_wp)
 summary(efficient_mod)
 
 
+ggplot(clean_wp, aes(phone_at_work_time, go_above)) + 
+  geom_jitter(height = .4, width = .4) +geom_smooth(method = lm)
+
+
 #======================================================================
-#largest linear relationship
+#largest linear relationship with phone time at work
 #======================================================================
 names(clean_wp)
 pvals <- c()
@@ -69,3 +73,6 @@ estimates
 
 #variables with very small p-values indicating very likely some relationship
 #go above and use time efficient
+names(clean_wp)
+summary(lm(use_time_efficient ~ Gender + phone_at_work_time, data = clean_wp))
+summary(lm(use_time_efficient ~ Gender * phone_at_work_time, data = clean_wp))
