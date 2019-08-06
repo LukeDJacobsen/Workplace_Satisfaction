@@ -21,18 +21,12 @@ Full_wp <- Full_wp %>% dplyr::select(-c('IP Address', 'Email Address', 'First Na
 names(Full_wp)
 #need to add quantitative responses where appropriate
 
-table(Full_wp$`Overall, I am satisfied working in the organization I'm in.`)
-Full_wp$Overall_satisfaction <- ifelse(Full_wp$`Overall, I am satisfied working in the organization I'm in.` == "Agree", 4,
-                                       ifelse(Full_wp$`Overall, I am satisfied working in the organization I'm in.` == "Disagree", 2,
-                                           ifelse(Full_wp$`Overall, I am satisfied working in the organization I'm in.` == "Neither agree nor disagree", 3,
-                                              ifelse(Full_wp$`Overall, I am satisfied working in the organization I'm in.` == "Strongly agree", 5,
-                                                     ifelse(Full_wp$`Overall, I am satisfied working in the organization I'm in.` == "Strongly disagree", 1, NA)))))
 ordinal_to_quant <- function(column){
   ifelse(column == "Agree", 4,
-  ifelse(column == "Disagree", 2,
-  ifelse(column == "Neither agree nor disagree", 3,
-  ifelse(column == "Strongly agree", 5,
-  ifelse(column == "Strongly disagree", 1, NA)))))
+      ifelse(column == "Disagree", 2,
+          ifelse(column == "Neither agree nor disagree", 3,
+              ifelse(column == "Strongly agree", 5,
+                  ifelse(column == "Strongly disagree", 1, NA)))))
 }
 
 freq_to_quant <- function(column){
@@ -103,4 +97,5 @@ Full_wp$house_income_midpoint <- ifelse(Full_wp$`Household Income` == '$0-$9,999
                                                                                                 ifelse(Full_wp$`Household Income` == '$75,000-$99,999', 87500, NA))))))))))
 
 #======================================================================
-write_csv(Full_wp, 'clean_wp.csv')
+
+write_csv(Full_wp, 'data/clean_wp.csv')

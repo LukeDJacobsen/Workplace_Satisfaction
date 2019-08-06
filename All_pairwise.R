@@ -8,10 +8,8 @@ clean_wp <- read_csv('data/clean_wp.csv')
 #Goal: Correlation matrix of quantitative variables to understand strongest relationships
 ################################################################################
 
-#having issues so extra
-clean_wp$feel_constant_need_to_look_at_phone <- ordinal_to_quant(clean_wp$feel_constant_need_to_look_at_phone)
 #just take quantitatives
-wp_quant <- clean_wp[,69:94]
+wp_quant <- clean_wp[,69:96]
 
 
 #function that creats dataframe with simple linear regression summaries
@@ -51,7 +49,13 @@ conservative_sig
 
 #all significant with very liberal p-value threshold
 liberal_sig <- all_pairwise %>% filter(all_pairwise$p_value < .05 & all_pairwise$p_value > 0)
-dim(liberal_sig)
 
 #significant with very liberal p-value threshold, but not conservative threshold
 only_liberal_sig <- all_pairwise %>% filter(all_pairwise$p_value < .05 & all_pairwise$p_value > .05/(381-26))
+
+variables_significant_with <- function(df, variable){
+  return(df %>% filter(var_1 == variable | var_2 == variable))
+}
+
+conservative_sig %>% variables_significant_with('phone_at_work_time')
+liberal_sig %>% variables_significant_with('phone_at_work_time')
