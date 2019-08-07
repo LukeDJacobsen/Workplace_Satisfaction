@@ -9,6 +9,12 @@ clean_wp <- read_csv('data/clean_wp.csv')
 names(clean_wp)
 ggplot(clean_wp, aes(phone_at_work_time ,personal_satisfaction))  +
   geom_jitter(height = .4, width = .4) + geom_smooth(method = lm)
+ggplot(clean_wp, aes(phone_at_work_time , feel_constant_need_to_look_at_phone))  +
+  geom_jitter(height = .4, width = .4) + geom_smooth(method = lm)
+
+ggplot(clean_wp, aes(feel_constant_need_to_look_at_phone, difficult_to_concentrate))   +
+  geom_jitter(height = .4, width = .4) + geom_smooth(method = lm)
+
 sat_mod <- lm(personal_satisfaction ~ phone_at_work_time, data = clean_wp)
 summary(sat_mod)
 

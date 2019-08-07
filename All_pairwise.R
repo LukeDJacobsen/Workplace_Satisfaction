@@ -42,6 +42,7 @@ pairwise_lm <- function(df){
   return(desired_df)
 }
 all_pairwise <- pairwise_lm(wp_quant)
+all_pairwise
 #all significant with very conservative p-value threshold (bonferroni)
 conservative_sig <- all_pairwise %>% filter(all_pairwise$p_value < .05/(381 - 26) & all_pairwise$p_value > 0)
 dim(conservative_sig)
@@ -49,6 +50,7 @@ conservative_sig
 
 #all significant with very liberal p-value threshold
 liberal_sig <- all_pairwise %>% filter(all_pairwise$p_value < .05 & all_pairwise$p_value > 0)
+dim(liberal_sig)
 
 #significant with very liberal p-value threshold, but not conservative threshold
 only_liberal_sig <- all_pairwise %>% filter(all_pairwise$p_value < .05 & all_pairwise$p_value > .05/(381-26))

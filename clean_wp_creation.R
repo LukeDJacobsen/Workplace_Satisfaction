@@ -81,11 +81,11 @@ Full_wp$mobile_per_day <- ifelse(Full_wp$`On average, how many cumulative hours 
 Full_wp$consciously_no_phone <- ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc` == '0-1 Hour', 0,
                                  ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc`== '1-2 Hours', 1,
                                         ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc` == '2-3 Hours', 2,
-                                               ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc`, 3,
-                                                      ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc`, 4,
-                                                             ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc`, 5, NA))))))
+                                               ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc` == '3-4 Hours', 3,
+                                                      ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc` == '4-5 Hours', 4,
+                                                             ifelse(Full_wp$`Apart from sleep, please estimate in total the number of hours you consciously choose NOT to use your smartphone. For example, personal care time, exercise, prayer/meditation, at work, cooking/eating, etc` == '5 + Hours', 5, NA))))))
 
-Full_wp$house_income_midpoint <- ifelse(Full_wp$`Household Income` == '$0-$9,999', 5000,
+ Full_wp$house_income_midpoint <- ifelse(Full_wp$`Household Income` == '$0-$9,999', 5000,
                                         ifelse(Full_wp$`Household Income` == '$10,000-$24,999', 17500,
                                                ifelse(Full_wp$`Household Income` == '$100,000-$124,999', 112500,
                                                       ifelse(Full_wp$`Household Income` == '$125,000-$149,999', 137500,
@@ -99,3 +99,5 @@ Full_wp$house_income_midpoint <- ifelse(Full_wp$`Household Income` == '$0-$9,999
 #======================================================================
 
 write_csv(Full_wp, 'data/clean_wp.csv')
+
+ 
