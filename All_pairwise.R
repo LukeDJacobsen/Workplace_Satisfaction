@@ -47,10 +47,15 @@ all_pairwise
 conservative_sig <- all_pairwise %>% filter(all_pairwise$p_value < .05/(381 - 26) & all_pairwise$p_value > 0)
 dim(conservative_sig)
 conservative_sig
+write.csv(conservative_sig,  '~/Workplace_satisfaction/low_threshold_significant.csv')
+
+
 
 #all significant with very liberal p-value threshold
 liberal_sig <- all_pairwise %>% filter(all_pairwise$p_value < .05 & all_pairwise$p_value > 0)
 dim(liberal_sig)
+?write.csv
+write.csv(liberal_sig,  '~/Workplace_satisfaction/high_threshold_significant.csv')
 
 #significant with very liberal p-value threshold, but not conservative threshold
 only_liberal_sig <- all_pairwise %>% filter(all_pairwise$p_value < .05 & all_pairwise$p_value > .05/(381-26))

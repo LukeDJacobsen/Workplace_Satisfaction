@@ -40,6 +40,8 @@ ggplot(clean_wp, aes(employer_size, bad_sleep)) +  geom_boxplot()
 wp_gender <- clean_wp %>% filter(Gender == 'Female' | Gender == 'Male') %>% 
   select(Gender, Org_satisfaction:house_income_midpoint)
 
+write_csv(wp_gender, 'wp_gender.csv')
+
 all_t <- function(df, x){ 
   y_var <- c()
   pvalue <- c()
@@ -57,7 +59,10 @@ all_t <- function(df, x){
 gender_trends <- all_t(df= wp_gender, x = wp_gender$Gender)
 gender_trends %>% filter(pvalue < .05)
 
-ggplot(wp_gender, aes(Gender, use_time_efficient)) + geom_violin()
+ggplot(wp_gender, aes(Gender, use_time_efficient)) + geom_violin() +
+  ylab("Use Time Efficient")
+
+ggplot(wp_gender, aes(Gender, use_time_efficient)) + geom_boxplot() 
 wp_gender %>% group_by(Gender) %>% summarize(mean(use_time_efficient, na.rm = T))
 ggplot(wp_gender, aes(Gender, efficiency_compared_to_peers)) + geom_violin()
 

@@ -1,0 +1,99 @@
+---
+title: "Initial Analysis of Workplace Satisfaction Survey Data"
+author: "Luke Jacobsen"
+date: "8/23/2019"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(tidyverse)
+library(knitr)
+high_threshold_significant <- read_csv("data/high_threshold_significant.csv")
+low_threshold_significant <- read_csv("data/low_threshold_significant.csv")
+wp_gender <- read_csv("data/wp_gender.csv")
+clean_wp <- read_csv("data/clean_wp.csv")
+```
+
+##Introduction
+This exploratory analysis investigates relationships  amoung variables of data from a workplace satisfaction survey.
+
+##Data
+The data come from a survey created by Tyler Rice on Surveymonkey.com. There were 381 eligible respondants. An eligible respondant is defined as a person that currently has a job and a smartphone. Approximately 40 questions were asked. 18 questions had responses with the options "Strongly Agree", "Agree", "Neither Agree nor Disagree", "Disagree", and "Strongly Disagree". To explore these variables I recoded the levels from 1 to 5 with "Strongly Disagree" = 1 to "Strongly Agree" = 5. 6 variables had responses "Always", "Sometimes", "Rarely", or "Never". These were recoded from 1 to 4 with Never = 1 to Always = 4. Also, there were a few variables that asked for number of hours per day with responses like "0-1 hours", "1-2 hours" etc. These variables were rounded down.
+
+
+##Methods
+
+Three methods were used to analyse these data:
+
+1) All pairwise simple linear regression models were made using all created quantitative variables.
+
+2) Anova models and t-tests were made to look at changes in created quantitative variables by company size and gender.
+
+3) Summary statistics and difference in proportions tests were run for specific levels of pairwise relationships for select variables.
+
+##Results
+
+####1)
+Table 1 in the appendix show all the pairwise relationships with slope estimates significantly different from 0 at the 0.05 level. Table 2 in the appendix show all the pairwise relationships with slope estimates significantly different from 0 at the $\frac{.05}{355} = .00014$ level. There are 355 pairwise regression models so this is the significance level using the Bonferroni correction for multiple comparison starting with the significance level .05. For the relationships with slope estimate p-values lower than .00014 it is reasonable to conclude the two variables have an association with each other. For example, stress level and bad sleep have a significant relationship with each other. For the relationships with p-values closer to .05 we cannot be as confident in having evidence of a relationship. Because we are doing so many comparisons, we are bound to have a few models with p-values lower than .05 simply due to inherent randomness of our sample. 
+
+For an understanding of these relationships I have included an example of how to interpret the results from Table 1 and Table 2. The relationship between 'Phone time at work' and 'I go above and beyond what is expected from me at work' has a significant relationship with each other. On average, as phone time at work increases, respondants say they go above and beyond less. The below plot shows the strength of this relationship. 
+
+```{r, echo = F, warning = F, fig.width=4, fig.height=4, fig.align='center'}
+ggplot(clean_wp, aes(phone_at_work_time, go_above))  +
+  geom_jitter(height = .4, width = .4) + geom_smooth(method = lm, se = F) + 
+  xlab('Phone time at work') + ylab('I go above and beyond')
+```
+
+####2)
+In addition I created ANOVA models for each quantiative variable where company size was the only predictor. The result of these ANOVA models showed that only average loneliness (p-value = .039) and bad sleep (p-value = .01) differed by company size. All other variables did not have a significantly different mean by company size category at the .05 significance level. Again due to multiple comparisons these associations may only be due to randomness. 
+
+The result of the t-tests for gender showed only four variables with differing means by gender at the .05 significance level. These variables were "I think my coworkers are happier", "I use time efficient", "I'm efficient compared to peers", and "feel constant need to look at phone". A violin plot of the distributions by each gender and using time efficient is included to understand one example of what this difference looks like. 
+
+```{r, echo = F, warning = F, fig.width=4, fig.height=4, fig.align='center'}
+ggplot(wp_gender, aes(Gender, use_time_efficient)) + geom_violin() +
+  ylab("Use Time Efficient")
+```
+
+
+####3) 
+For 6 relationships I created difference in proportions tests to further understand relationships between specific variables. First consider the variables 'I find it difficult to stay concentrated on tasks for sustained amount of time' and 'I feel a constant need to look at my phone'. I created a categorical variable for each of these variables where 'Agree' and 'Strongly Agree' are considered yes and the other three levels are considered no. For those that feel a constant need to look at their phone, they find it difficult to concentrate 18.8\% more. This is a statistically significant difference with a p-value of 0.003452. 
+
+The same data manipulation was done to the variables 'I have depressive tendencies' and 'how much do you feel your phone is distracting'. For those that feel a constant need to look at phone, 3.4\% more respondants say they have depressive tendencies (p-value = .81). This is not a very large difference and from this test we can say we do not have evidence there is a true difference in the proportion of people that have depressive tendencies and feel that they have a constant need to look at their phone. 
+
+Now consider the variables 'I find it difficult to stay concentrated on tasks for sustained amount of time' and 'On a scale of 1 - 5 please rate your level of stress'. The same data manipulation was done to 'I find it difficult to stay concentrated on tasks for sustained amount of time'. For 'On a scale of 1 - 5 please rate your level of stress' I consider all values 3 through 5 as stressed and values 1 or 2 as not stressed. For those that are stressed, 21.7\% more people find it difficult to stay concentrated (p-value = .001).
+
+Now consider the variables 'I suffer from poor sleep' and 'On average, how many cumulative hours per day do you spend on your mobile device'. For those that agreed or strongly agreed that they suffer from poor sleep are considered to suffer from poor sleep and those that spend more than 3 hours per day on their mobile device are considered to use their phone a lot. For those that spend a lot of time on their mobile device per day, 8.7\% more suffer from poor sleep (p-value = .1420). We do not have enough evidence to conclude those that spend a lot of time on their mobile device suffer from poor sleep more. 
+
+Now consider the variables 'I feel a constant need to look at my phone' and 'On a scale of 1 - 5 please rate your level of stress'. The same data manipulation is done as described before. Given a respondent feels they have a constant need to look at their phone, 8.3\% more have high stress (p-value = .198). We do not have enough evidence to conclude that that have a constant need to look at their phone also have higher stress. 
+
+Now consider the variables 'On average, how many cumulative hours per day do you spend on your mobile device' and 'On a scale of 1 - 5 please rate your level of stress'. The same data manipulation is done as described before. For those that use their phone a lot (3+hours per day), .6\% more have high stress (p-value $\approx 1$). We do not have any evidence in a difference of these proportions. 
+
+
+
+
+
+##Conclusions
+Throughout this data there are some clear relationships amoung many variables. Because the variables used were originally categorical variables it should be noted that precise interpretations for regression models do not have a clear interpretation, presenting a drawback of this method. This initial analysis gives inspiration and direction for which relationships should and should not be studied further. 
+
+##Appendix
+
+
+```{r include = F}
+low_p <- low_threshold_significant %>% dplyr::select(var_1, var_2, intercept_est,
+                                                     slope_est, p_value, n)
+high_p <- high_threshold_significant %>% dplyr::select(var_1, var_2,
+                                                       intercept_est, slope_est,
+                                                       p_value, n)
+names(low_p) <- c('Y', 'X', 'intercept', 'slope', 'p_value', 'n')
+names(high_p) <- c('Y', 'X', 'intercept', 'slope', 'p_value', 'n')
+```
+
+```{r echo = F}
+kable(high_p, digits = 4, caption = 'Significant relationships at the 0.05 level')
+kable(low_p, digits = 4, caption = 'Significant relationships at the 0.00014 level')
+```
